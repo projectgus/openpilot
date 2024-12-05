@@ -197,7 +197,7 @@ bool VideoDecoder::decode(FrameReader *reader, int idx, VisionBuf *buf) {
 
 AVFrame *VideoDecoder::decodeFrame(AVPacket *pkt) {
   int ret = avcodec_send_packet(decoder_ctx, pkt);
-  if (ret < 0) {
+  if (ret < 0 && ret != AVERROR(EAGAIN)) {
     rError("Error sending a packet for decoding: %d", ret);
     return nullptr;
   }
